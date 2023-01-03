@@ -1,3 +1,5 @@
+#define TAMANHO_DA_PALAVRA 20
+
 void imprimeCabecalho();
 void chuta();
 int jaChutou(char letra);
@@ -6,3 +8,4 @@ void escolhePalavra();
 int ganhou();
 int enforcou();
 void adicionaPalavra();
+int chutesErrados();
