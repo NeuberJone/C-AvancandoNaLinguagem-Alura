@@ -1,10 +1,58 @@
 #include <stdio.h>
 
+void imprimeCabecalho(){
+    // imprime cabecalho
+    printf("*******************\n");
+    printf("** Jogo de Forca **\n");
+    printf("*******************\n\n");
+}
+
+void chuta(char chutes[26], int* tentativas){
+    char chute;
+    scanf(" %c", &chute);
+
+    chutes[(*tentativas)] = chute;
+    (*tentativas)++;
+}
+
+int jaChutou(char letra, char chutes[26], int tentativas){
+    int achou = 0;
+
+    for (int j = 0; j < tentativas; j++){
+
+        if (chutes[j] == letra){
+            achou = 1;
+            break;
+        }       
+    }
+    return achou;
+}
+
+void desenhaForca(char palavraSecreta[20], char chutes[26], int tentativas){
+
+    for (int i = 0; i < strlen(palavraSecreta); i++){
+
+        int achou = jaChutou(palavraSecreta[i], chutes, tentativas);
+
+        if(achou){
+            printf("%c ", palavraSecreta[i]);
+        } else {
+            printf("_ ");
+        }
+            
+     }
+    printf("\n");
+}
+
+void escolhePalavra(char palavraSecreta){
+    sprintf(palavraSecreta, "MELANCIA");
+}
+
 int main() {
 
     char palavraSecreta[20];
 
-    sprintf(palavraSecreta, "MELANCIA");
+    escolhePalavra(palavraSecreta);
 
     int acertou = 0;
     int enforcou = 0;
@@ -12,34 +60,13 @@ int main() {
     char chutes[26];
     int tentativas = 0;
 
+    imprimeCabecalho();
+
     do{
 
-        for (int i = 0; i < strlen(palavraSecreta); i++){
+        desenhaForca(palavraSecreta, chutes, tentativas);
 
-            int achou = 0;
-
-            for (int j = 0; j < tentativas; j++){
-
-                if (chutes[j] == palavraSecreta[i]){
-                    achou = 1;
-                    break;
-                }
-                
-            }
-
-            if(achou){
-                printf("%c ", palavraSecreta[i]);
-            } else {
-                printf("_ ");
-            }
-            
-        }
-        printf("\n");
-
-        char chute;
-        scanf(" %c", &chute);
-
-        chutes[tentativas] = chute;
+        chuta(chutes, &tentativas);
         tentativas++;
     
     } while (!acertou && !enforcou);
