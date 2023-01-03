@@ -54,7 +54,21 @@ void desenhaForca(){
 }
 
 void escolhePalavra(){
-    sprintf(palavraSecreta, "MELANCIA");
+    FILE* f;
+    
+    f = fopen("palavras.txt", "r");
+
+    int quantidadeDePalavras;
+    fscanf(f, "%d", &quantidadeDePalavras);
+
+    srand(time(0));
+    int randomico = rand() % quantidadeDePalavras;
+
+    for(int i = 0; i <= randomico; i++) {
+        fscanf(f, "%s", palavraSecreta);
+    }
+
+    fclose(f);
 }
 
 int ganhou() {
