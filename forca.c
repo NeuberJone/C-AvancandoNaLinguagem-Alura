@@ -1,4 +1,9 @@
 #include <stdio.h>
+#include <string.h>
+
+char palavraSecreta[20];
+char chutes[26];
+int chutesDados = 0;
 
 void imprimeCabecalho(){
     // imprime cabecalho
@@ -7,18 +12,19 @@ void imprimeCabecalho(){
     printf("*******************\n\n");
 }
 
-void chuta(char chutes[26], int* tentativas){
+void chuta(){
     char chute;
     scanf(" %c", &chute);
 
-    chutes[(*tentativas)] = chute;
-    (*tentativas)++;
+    chutes[chutesDados] = chute;
+    chutesDados++;
 }
 
-int jaChutou(char letra, char chutes[26], int tentativas){
+int jaChutou(char letra){
+    
     int achou = 0;
 
-    for (int j = 0; j < tentativas; j++){
+    for (int j = 0; j < chutesDados; j++){
 
         if (chutes[j] == letra){
             achou = 1;
@@ -28,11 +34,11 @@ int jaChutou(char letra, char chutes[26], int tentativas){
     return achou;
 }
 
-void desenhaForca(char palavraSecreta[20], char chutes[26], int tentativas){
+void desenhaForca(){
 
     for (int i = 0; i < strlen(palavraSecreta); i++){
 
-        int achou = jaChutou(palavraSecreta[i], chutes, tentativas);
+        int achou = jaChutou(palavraSecreta[i]);
 
         if(achou){
             printf("%c ", palavraSecreta[i]);
@@ -44,32 +50,45 @@ void desenhaForca(char palavraSecreta[20], char chutes[26], int tentativas){
     printf("\n");
 }
 
-void escolhePalavra(char palavraSecreta){
+void escolhePalavra(){
     sprintf(palavraSecreta, "MELANCIA");
+}
+
+int enforcou(){
+
+    int erros = 0;
+
+    for (int i = 0; i < chutesDados; i++){
+        
+        int existe = 0;
+
+        for (int j = 0; j < strlen(palavraSecreta); j++){
+
+            if(chutes[i] == palavraSecreta[j]){
+
+                existe = 1;
+                break;
+            }
+        }
+        if(!existe) erros++;
+        printf("ERROS = %d\n", erros);
+    }
+    return erros >= 5;
 }
 
 int main() {
 
-    char palavraSecreta[20];
-
-    escolhePalavra(palavraSecreta);
+    escolhePalavra();
+    imprimeCabecalho();
 
     int acertou = 0;
-    int enforcou = 0;
-
-    char chutes[26];
-    int tentativas = 0;
-
-    imprimeCabecalho();
 
     do{
 
-        desenhaForca(palavraSecreta, chutes, tentativas);
-
-        chuta(chutes, &tentativas);
-        tentativas++;
-    
-    } while (!acertou && !enforcou);
+        desenhaForca();
+        chuta();
+        
+    } while (!acertou && !enforcou());
 
     printf("%s", palavraSecreta);
 }
